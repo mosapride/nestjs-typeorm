@@ -1,11 +1,13 @@
 import { AppLogger } from './util/app-logger';
-import { LogLevel } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { AppConfigService as AppConfigService } from './service/app-config/app-config.service';
+import { loadDotEnv } from './util/env-file';
+import { LogLevel } from '@nestjs/common';
 
 async function bootstrap() {
-  const loggerLevel: boolean | LogLevel[] = (process.env.LEVEL && process.env.LEVEL === 'RELEASE') ? ['error', 'warn'] : ['log', 'error', 'warn', 'debug', 'verbose'];
+  loadDotEnv();
+  const loggerLevel = process.env.LOG_LEVEL.split(',') as LogLevel[];
   const app = await NestFactory.create(AppModule, {
     logger: loggerLevel,
   });

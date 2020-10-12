@@ -1,11 +1,8 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { getEnvFileNameFullPath } from './env-file';
-import * as dotenv from 'dotenv';
+import { loadDotEnv} from './env-file';
 
 const getTypeOrmModuleOptions = (): TypeOrmModuleOptions => {
-  dotenv.config({
-    path: getEnvFileNameFullPath()
-  });
+  loadDotEnv();
 
   const option: TypeOrmModuleOptions = {
     type: 'mongodb',

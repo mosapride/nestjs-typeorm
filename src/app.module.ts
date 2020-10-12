@@ -5,12 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppConfigService } from './service/app-config/app-config.service';
 import { UserModule } from './user/user.module';
-import { TypeOrmConfig } from './service/app-config/typeorm-config-service';
+import { TypeOrmConfig } from './service/app-config/typeorm-config.service';
 import { getEnvFileName } from './util/env-file';
-
-if (!process.env.LEVEL) {
-  throw new Error(`Not Found 'Environment variable' : LEVEL`);
-}
 
 const envFile = getEnvFileName();
 
