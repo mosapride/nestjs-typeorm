@@ -1,7 +1,7 @@
 import { AppLogger } from './util/app-logger';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { AppConfigService as AppConfigService } from './service/app-config/app-config.service';
+import { AppConfigService } from './service/app-config/app-config.service';
 import { loadDotEnv } from './util/env-file';
 import { LogLevel } from '@nestjs/common';
 
