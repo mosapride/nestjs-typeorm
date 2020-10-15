@@ -16,3 +16,29 @@
 
 DataBaseの設定が必要となる。
 
+## Mysql起動
+
+```atom
+docker run --name nestjs-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=test -d mysql
+```
+
+```ts
+  option = {
+    type : 'mysql',
+    host: "localhost",
+    port: 3306,
+    username: "root",
+    password: "my-secret-pw",
+    database: "test",
+    entities: ['src/typeorm/entities/**/*.ts'],
+    migrations: ['src/typeorm/migrations/**/*.ts'],
+    subscribers: ['src/typeorm/subscribers/**/*.ts'],
+    synchronize: true,
+    logging: false,
+    cli: {
+      entitiesDir: 'src/typeorm/entities',
+      migrationsDir: 'src/typeorm/migrations',
+      subscribersDir: 'src/typeorm/subscribers'
+    },
+  };
+```

@@ -8,7 +8,11 @@ import { ConfigService } from '@nestjs/config';
  */
 type Config = {
   DOMAIN: string;
-  MONGODB_URL: string;
+  MYSQL_HOST: string;
+  MYSQL_PORT: number;
+  MYSQL_USERNAME: string,
+  MYSQL_PASSWORD: string,
+  MYSQL_DATABASE: string,
   SERVER_PORT: number;
   BCRYPT_SALT_ROUNDS: number;
   JWT_SECRET_KEY: string;
@@ -18,8 +22,8 @@ type Config = {
  * Config型コンパニオンオブジェクトパターン.
  */
 const Config = {
-  from(DOMAIN, MONGODB_URL, SERVER_PORT, BCRYPT_SALT_ROUNDS, JWT_SECRET_KEY): Config {
-    return { DOMAIN, MONGODB_URL, SERVER_PORT, BCRYPT_SALT_ROUNDS, JWT_SECRET_KEY };
+  from(DOMAIN, MYSQL_HOST, MYSQL_PORT, MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_DATABASE, SERVER_PORT, BCRYPT_SALT_ROUNDS, JWT_SECRET_KEY): Config {
+    return { DOMAIN, MYSQL_HOST, MYSQL_PORT, MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_DATABASE, SERVER_PORT, BCRYPT_SALT_ROUNDS, JWT_SECRET_KEY };
   }
 };
 
@@ -29,7 +33,7 @@ const Config = {
  * .envファイルを読み込み/保存/取得機能を提供する。
  */
 @Injectable()
-export class AppConfigService  {
+export class AppConfigService {
   config: Config;  // 環境変数保存変数
   constructor(private configService: ConfigService) {
     this.settingConfig();
@@ -40,11 +44,16 @@ export class AppConfigService  {
    */
   private settingConfig() {
     const domain = this.loadEnvFile<string>('DOMAIN');
-    const mongodb = this.loadEnvFile<string>('MONGODB_URL');
+    const mysqlHost = this.loadEnvFile<string>('MYSQL_HOST');
+    const mysqlPort = this.loadEnvFile<number>('MYSQL_PORT');
+    const mysqlUsername = this.loadEnvFile<string>('MYSQL_USERNAME');
+    const mysqlPassword = this.loadEnvFile<string>('MYSQL_PASSWORD');
+    const mysqlDatabase = this.loadEnvFile<string>('MYSQL_DATABASE');
+
     const server_port = this.loadEnvFile<number>('SERVER_PORT');
     const bcrypt_salt_rounds = this.loadEnvFile<number>('BCRYPT_SALT_ROUNDS');
     const jwt_key = this.loadEnvFile<string>('JWT_SECRET_KEY');
-    this.config = Config.from(domain, mongodb, server_port, bcrypt_salt_rounds, jwt_key);
+    this.config = Config.from(domain, mysqlHost, mysqlPort, mysqlUsername, mysqlPassword, mysqlDatabase, server_port, bcrypt_salt_rounds, jwt_key);
   }
 
   /**

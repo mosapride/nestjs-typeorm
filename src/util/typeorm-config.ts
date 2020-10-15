@@ -1,26 +1,26 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { loadDotEnv} from './env-file';
+import { loadDotEnv } from './env-file';
+import { join } from 'path';
 
 const getTypeOrmModuleOptions = (): TypeOrmModuleOptions => {
   loadDotEnv();
-
   const option: TypeOrmModuleOptions = {
-    type: 'mongodb',
-    url: process.env.MONGODB_URL,
-    useUnifiedTopology: true,
-    entities: ['src/typeorm/entities/**/*.entity{.ts,.js}'],
-    migrations: ['src/typeorm/migrations/**/*{.ts,.js}'],
-    subscribers: ['src/typeorm/subscribers/**/*.{.ts,.js}'],
-    synchronize: false,
-    autoLoadEntities: false,
-    logging: true,
+    type: 'mysql',
+    host: process.env.MYSQL_HOST,
+    port: +process.env.MYSQL_PORT,
+    username: process.env.MYSQL_USERNAME,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
+    entities: [join(__dirname, '..', '/**/*.entity{.ts,.js}')],
+    migrations: [join(__dirname, '..', '/**/migrations/**/*{.ts,.js}')],
+    subscribers: [join(__dirname, '..', '/**/*.subscribe{.ts,.js}')],
+    synchronize: (process.env.TYPEORM_LOGGING && process.env.TYPEORM_LOGGING === 'true') ? true : false,
+    logging: (process.env.TYPEORM_SYNCHRONIZE && process.env.TYPEORM_SYNCHRONIZE === 'true') ? true : false,
     cli: {
-      entitiesDir: 'src/typeorm/entities',
+      entitiesDir: 'src',
       migrationsDir: 'src/typeorm/migrations',
-      subscribersDir: 'src/typeorm/subscribers'
     },
   };
-
   return option;
 };
 
