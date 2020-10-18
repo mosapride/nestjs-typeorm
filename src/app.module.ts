@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppConfigService } from './service/app-config/app-config.service';
 import { TypeOrmConfig } from './service/app-config/typeorm-config.service';
 import { getEnvFileName } from './util/env-file';
+import { UserModule } from './endpoint/user/user.module';
 
 const envFile = getEnvFileName();
 
@@ -18,6 +19,7 @@ const envFile = getEnvFileName();
       imports: [ConfigModule],
       useClass: TypeOrmConfig
     }),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppConfigService, TypeOrmConfig],

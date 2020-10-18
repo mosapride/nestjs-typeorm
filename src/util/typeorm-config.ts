@@ -11,13 +11,13 @@ const getTypeOrmModuleOptions = (): TypeOrmModuleOptions => {
     username: process.env.MYSQL_USERNAME,
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE,
-    entities: [join(__dirname, '..', '/**/*.entity{.ts,.js}')],
+    entities: [join(__dirname, '..', '/**/typeorm/entity/*.entity{.ts,.js}')],
     migrations: [join(__dirname, '..', '/**/migrations/**/*{.ts,.js}')],
     subscribers: [join(__dirname, '..', '/**/*.subscribe{.ts,.js}')],
     synchronize: (process.env.TYPEORM_LOGGING && process.env.TYPEORM_LOGGING === 'true') ? true : false,
     logging: (process.env.TYPEORM_SYNCHRONIZE && process.env.TYPEORM_SYNCHRONIZE === 'true') ? true : false,
     cli: {
-      entitiesDir: 'src',
+      entitiesDir: 'src/typeorm/entity',
       migrationsDir: 'src/typeorm/migrations',
     },
   };
