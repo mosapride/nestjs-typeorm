@@ -13,7 +13,7 @@ export class UserEntity implements User {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column({ default: false })
@@ -21,5 +21,5 @@ export class UserEntity implements User {
 
   @Column({ default: false })
   debug: boolean;
-  
+
 }

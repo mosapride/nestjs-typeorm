@@ -22,9 +22,9 @@ export class UserController {
     return this.userService.findUserInfo();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string): Promise<UserEntity> {
-    return this.userService.findOne(+id);
+  @Get(':email')
+  findOne(@Param('email') email: string): Promise<UserEntity> {
+    return this.userService.findOne(email);
   }
 
   @Get('page/:skip')

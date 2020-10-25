@@ -25,7 +25,7 @@ export class UserService {
     return this.userRepository.find();
   }
 
-  findUserInfo() : Promise<ResponseUser[]>{
+  findUserInfo(): Promise<ResponseUser[]> {
     return this.userRepository.find({
       select: ["name", "email"]
     }) as Promise<ResponseUser[]>;
@@ -36,9 +36,10 @@ export class UserService {
    * 
    * @param id ユーザーID(PK)
    */
-  findOne(id: number): Promise<UserEntity> {
-    return this.userRepository.findOne(id);
+  findOne(email: string): Promise<UserEntity> {
+    return this.userRepository.findOne({ where: { email: email } });
   }
+
 
   /**
    * 条件に一致したユーザー情報リストを返す
@@ -69,7 +70,7 @@ export class UserService {
    * @param updateName ユーザー情報
    */
   updateNameSample1(updateName: RequestUpdateUser) {
-    return this.userRepository.update(updateName.id, { name: updateName.name, password: updateName.password , email : updateName.email });
+    return this.userRepository.update(updateName.id, { name: updateName.name, password: updateName.password, email: updateName.email });
   }
 
   /**
@@ -78,7 +79,7 @@ export class UserService {
    * @param updateName ユーザー情報
    */
   updateNameSample2(updateName: RequestUpdateUser) {
-    return this.userRepository.update({ id: updateName.id, password: updateName.password }, { name: updateName.name,  email : updateName.email });
+    return this.userRepository.update({ id: updateName.id, password: updateName.password }, { name: updateName.name, email: updateName.email });
   }
 
 }
