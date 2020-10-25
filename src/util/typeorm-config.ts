@@ -14,12 +14,13 @@ const getTypeOrmModuleOptions = (): TypeOrmModuleOptions => {
     entities: [join(__dirname, '..', '/**/typeorm/entity/*.entity{.ts,.js}')],
     migrations: [join(__dirname, '..', '/**/migrations/**/*{.ts,.js}')],
     subscribers: [join(__dirname, '..', '/**/*.subscribe{.ts,.js}')],
-    synchronize: (process.env.TYPEORM_LOGGING && process.env.TYPEORM_LOGGING === 'true') ? true : false,
-    logging: (process.env.TYPEORM_SYNCHRONIZE && process.env.TYPEORM_SYNCHRONIZE === 'true') ? true : false,
+    synchronize: (process.env.TYPEORM_SYNCHRONIZE && process.env.TYPEORM_SYNCHRONIZE === 'true') ? true : false,
+    logging: (process.env.TYPEORM_LOGGING && process.env.TYPEORM_LOGGING === 'true') ? true : false,
     cli: {
       entitiesDir: 'src/typeorm/entity',
       migrationsDir: 'src/typeorm/migrations',
     },
+    charset : 'utf8mb4_general_ci'
   };
   return option;
 };

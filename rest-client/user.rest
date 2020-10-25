@@ -1,0 +1,63 @@
+@baseUrl = http://localhost:8080
+@contents-json = Content-Type: application/json; charset=utf-8
+
+### 新規登録(CREATE)
+
+POST {{baseUrl}}/user
+{{contents-json}}
+
+{
+  "name" : "name{{$randomInt 0 9}}",
+  "password" : "{{$guid}}",
+  "email": "{{$randomInt 100 999}}@gmail.com"
+}
+
+### User情報をすべて返す(SELECT ALL)
+
+GET {{baseUrl}}/user
+
+### User情報(name,email)返す(SELECT name , email)
+
+GET {{baseUrl}}/user/all-info
+
+### :idに該当するユーザー情報を返す(SELECT)
+
+GET {{baseUrl}}/user/1
+
+### :skip番目からのユーザー情報を返す(最大5行) (SELECT LIMIT5)
+
+GET {{baseUrl}}/user/page/5
+
+### :nameと一致するユーザー情報を返す(SELECT WHERE)
+
+GET {{baseUrl}}/user/search/name3
+
+
+### idが一致するユーザーのname、password、emailを変更する(REPLACE)
+
+PATCH {{baseUrl}}/user
+{{contents-json}}
+
+{
+  "id" : 2,
+  "name" : "renameしました。",
+  "password" : "hogehoge",
+  "email" : "change.email@example.com"
+}
+
+### idとpasswordが一致するユーザーのname、emailを変更する(REPLACE)
+
+PATCH  {{baseUrl}}/user/pass
+{{contents-json}}
+
+{
+  "id" : 3,
+  "name" : "renameしました。",
+  "password" : "85081025-1e23-4860-a967-165a3faca282",
+  "email" : "change.email@example.com"
+}
+
+### delete
+
+DELETE  {{baseUrl}}/user/2
+
