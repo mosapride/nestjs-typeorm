@@ -9,7 +9,7 @@ POST {{baseUrl}}/user
 {
   "name" : "name{{$randomInt 0 9}}",
   "password" : "{{$guid}}",
-  "email": "{{$randomInt 100 999}}@gmail.com"
+  "email": "{{$randomInt 1 9999}}@gmail.com"
 }
 
 ### User情報をすべて返す(SELECT ALL)
@@ -20,9 +20,9 @@ GET {{baseUrl}}/user
 
 GET {{baseUrl}}/user/all-info
 
-### :idに該当するユーザー情報を返す(SELECT)
+### :emailに該当するユーザー情報を返す(SELECT)
 
-GET {{baseUrl}}/user/1
+GET {{baseUrl}}/user/7969@gmail.com
 
 ### :skip番目からのユーザー情報を返す(最大5行) (SELECT LIMIT5)
 
