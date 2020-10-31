@@ -16,14 +16,15 @@ type Config = {
   SERVER_PORT: number;
   BCRYPT_SALT_ROUNDS: number;
   JWT_SECRET_KEY: string;
+  AES_256_KEY: string;
 };
 
 /**
  * Config型コンパニオンオブジェクトパターン.
  */
 const Config = {
-  from(DOMAIN, MYSQL_HOST, MYSQL_PORT, MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_DATABASE, SERVER_PORT, BCRYPT_SALT_ROUNDS, JWT_SECRET_KEY): Config {
-    return { DOMAIN, MYSQL_HOST, MYSQL_PORT, MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_DATABASE, SERVER_PORT, BCRYPT_SALT_ROUNDS, JWT_SECRET_KEY };
+  from(DOMAIN, MYSQL_HOST, MYSQL_PORT, MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_DATABASE, SERVER_PORT, BCRYPT_SALT_ROUNDS, JWT_SECRET_KEY, AES_256_KEY): Config {
+    return { DOMAIN, MYSQL_HOST, MYSQL_PORT, MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_DATABASE, SERVER_PORT, BCRYPT_SALT_ROUNDS, JWT_SECRET_KEY, AES_256_KEY };
   }
 };
 
@@ -53,7 +54,8 @@ export class AppConfigService {
     const server_port = this.loadEnvFile<number>('SERVER_PORT');
     const bcrypt_salt_rounds = this.loadEnvFile<number>('BCRYPT_SALT_ROUNDS');
     const jwt_key = this.loadEnvFile<string>('JWT_SECRET_KEY');
-    this.config = Config.from(domain, mysqlHost, mysqlPort, mysqlUsername, mysqlPassword, mysqlDatabase, server_port, bcrypt_salt_rounds, jwt_key);
+    const aes_256_key = this.loadEnvFile<string>('AES_256_KEY');
+    this.config = Config.from(domain, mysqlHost, mysqlPort, mysqlUsername, mysqlPassword, mysqlDatabase, server_port, bcrypt_salt_rounds, jwt_key, aes_256_key);
   }
 
   /**
