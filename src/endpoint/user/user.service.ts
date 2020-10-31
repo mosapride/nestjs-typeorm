@@ -32,12 +32,12 @@ export class UserService {
   }
 
   /**
-   * ユーザーIDに一致したユーザー情報を返す
+   * emailに一致したユーザー情報を返す
    * 
-   * @param id ユーザーID(PK)
+   * @param email email(unique key)
    */
   findOne(email: string): Promise<UserEntity> {
-    return this.userRepository.findOne({ where: { email: email } });
+    return this.userRepository.findOne({ where: { email } });
   }
 
 
