@@ -1,12 +1,16 @@
-import { RequestCreateUser, ResponseUser, RequestUpdateUser } from './user.dto';
+import { RequestCreateUser, ResponseUser, RequestUpdateUser, User } from './user.dto';
 import { UserEntity } from '../../typeorm/entity/user.entity';
 import { Injectable } from "@nestjs/common";
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AppConfigService } from '../../service/app-config/app-config.service';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>) { }
+  readonly BCRYPT_SALT_ROUNDS: number = this.appConfigService.get('BCRYPT_SALT_ROUNDS');
+  constructor(@InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
+    private readonly appConfigService: AppConfigService) { }
 
   /**
    * 新しいユーザー情報を作成する
@@ -15,6 +19,11 @@ export class UserService {
    */
   create(createUser: RequestCreateUser) {
     const user: UserEntity = { ...new UserEntity(), ...createUser };
+    if (this.appConfigService.isDebug()) {
+      user.plainPassword = createUser.password;
+    }
+    const salt = bcrypt.genSaltSync(this.BCRYPT_SALT_ROUNDS);
+    user.password = bcrypt.hashSync(user.password, salt);
     return this.userRepository.save(user);
   }
 
@@ -29,6 +38,21 @@ export class UserService {
     return this.userRepository.find({
       select: ["name", "email"]
     }) as Promise<ResponseUser[]>;
+  }
+
+  /**
+   * email、パスワードの一致するユーザー情報を返す。
+   * @param email 
+   * @param password 
+   */
+  async auth(email: string, password: string): Promise<User> {
+    return await this.findOne(email).then(user => {
+      if (bcrypt.compareSync(password, user.password)) {
+        return user as User;
+      } else {
+        return null;
+      }
+    });
   }
 
   /**

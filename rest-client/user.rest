@@ -8,7 +8,7 @@ POST {{baseUrl}}/user
 
 {
   "name" : "name{{$randomInt 0 9}}",
-  "password" : "{{$guid}}",
+  "password" : "{{$randomInt 1000 9999}}",
   "email": "{{$randomInt 1 9999}}@gmail.com"
 }
 
@@ -61,3 +61,12 @@ PATCH  {{baseUrl}}/user/pass
 
 DELETE  {{baseUrl}}/user/2
 
+### login test
+
+POST  {{baseUrl}}/auth/login
+{{contents-json}}
+
+{
+  "email" :  "1464@gmail.com",
+  "password" : "1447"
+}

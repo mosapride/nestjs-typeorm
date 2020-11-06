@@ -1,6 +1,7 @@
 import { AppLogger } from './util/app-logger';
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
+import { LocalAuthGuard } from './auth/local-auth.guard';
 
 @Controller()
 export class AppController {
@@ -15,5 +16,12 @@ export class AppController {
     this.logger.warn('warnテスト');
     this.logger.verbose('verboseテスト');
     return this.appService.getHello();
+  }
+
+  // @UseGuards(AuthGuard('local'))
+  @UseGuards(LocalAuthGuard)
+  @Post('auth/login')
+  async login(@Req() req) {
+    return req.user;
   }
 }

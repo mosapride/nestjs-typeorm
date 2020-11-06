@@ -13,6 +13,9 @@ export class UserEntity implements User {
   @Column()
   password: string;
 
+  @Column()
+  plainPassword: string;
+
   @Column({ unique: true })
   email: string;
 
@@ -21,5 +24,8 @@ export class UserEntity implements User {
 
   @Column({ default: false })
   debug: boolean;
+
+  @Column({type: "timestamp", default: () => "CURRENT_TIMESTAMP"})
+  registered : Date;
 
 }
