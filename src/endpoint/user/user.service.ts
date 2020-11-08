@@ -1,7 +1,7 @@
 import { RequestCreateUser, ResponseUser, RequestUpdateUser, User } from './user.dto';
 import { UserEntity } from '../../typeorm/entity/user.entity';
 import { Injectable } from "@nestjs/common";
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AppConfigService } from '../../service/app-config/app-config.service';
@@ -60,8 +60,14 @@ export class UserService {
    * 
    * @param email email(unique key)
    */
-  findOne(email: string): Promise<UserEntity> {
-    return this.userRepository.findOne({ where: { email } });
+  findOne(email: string, modified?: Date): Promise<UserEntity> {
+    const option: FindOneOptions<UserEntity> = {};
+    if (modified) {
+      option.where = { email, modified };
+    } else {
+      option.where = { email };
+    }
+    return this.userRepository.findOne(option);
   }
 
 

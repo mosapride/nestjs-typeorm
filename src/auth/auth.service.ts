@@ -57,6 +57,14 @@ export class AuthService {
     }
   }
 
+  async checkAuthExpired(email: string, modified: Date) : Promise<boolean> {
+    const user = await this.userService.findOne(email , modified);
+    if (user) {
+      return true;
+    }
+    return false;
+  }
+
   /**
    * email、modifiedを暗号化したJwtを返す。
    * 

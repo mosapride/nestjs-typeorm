@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 import { AppConfigService } from './service/app-config/app-config.service';
 import { loadDotEnv } from './util/env-file';
 import { LogLevel } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   loadDotEnv();
@@ -11,6 +12,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: loggerLevel,
   });
+  app.use(cookieParser());
   const apiConfigService = app.get(AppConfigService);
   await app.listen(apiConfigService.get('SERVER_PORT') || 3000);
   const logger = new AppLogger('bootstrap');
