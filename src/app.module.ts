@@ -16,7 +16,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     PassportModule,
     UserModule,
-    // AppConfigModule,
+    AppConfigModule,
     AuthModule
   ],
   controllers: [AppController],

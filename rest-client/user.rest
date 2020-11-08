@@ -67,6 +67,6 @@ POST  {{baseUrl}}/auth/login
 {{contents-json}}
 
 {
-  "email" :  "1464@gmail.com",
-  "password" : "1447"
+  "email" :  "8866@gmail.com",
+  "password" : "6687"
 }

@@ -4,14 +4,16 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { LocalStrategy } from './local.strategy';
+import { JwtStrategy } from './jwt.strategy';
+import { LocalAuthGuard } from './local-auth.guard';
 
 @Module({
   imports: [
-    JwtModule.register({ secret: process.env.JWT_SECRET_KEY, signOptions: { expiresIn: '7 days' } }),
+    JwtModule.register({}),
     UserModule,
     AppConfigModule
   ],
-  exports: [LocalStrategy, AuthService],
-  providers: [LocalStrategy, AuthService]
+  exports: [LocalAuthGuard ,LocalStrategy, AuthService, JwtStrategy],
+  providers: [LocalAuthGuard ,LocalStrategy, AuthService, JwtStrategy]
 })
 export class AuthModule { }

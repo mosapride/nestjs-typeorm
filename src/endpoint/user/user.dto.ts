@@ -16,6 +16,8 @@ export type User = {
   isActive: boolean;
   // 登録日
   registered: Date;
+  // 更新日
+  modified: Date;
 };
 
 /**
@@ -35,8 +37,21 @@ export type ResponseUser = Pick<User, 'name' | 'email'>;
  */
 export type RequestUpdateUser = Omit<User, 'isActive'>;
 
-export type UserHash = {
-  id: number;
-  key: string;
-  registered: Date;
+/**
+ * ハッシュ化したデータのJWT形式。
+ */
+export type AuthJwtHash = {
+  email : string;
+  modified : Date;
+
 };
+
+/**
+ * ハッシュ化したデータのJWT形式。
+ */
+export type EncryptionAuthJwtHash = {
+  email : string;
+  modified : string;
+  iv? :string;
+};
+

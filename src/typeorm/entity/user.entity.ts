@@ -22,10 +22,10 @@ export class UserEntity implements User {
   @Column({ default: false })
   isActive: boolean;
 
-  @Column({ default: false })
-  debug: boolean;
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(0)' })
+  readonly registered: Date;
 
-  @Column({type: "timestamp", default: () => "CURRENT_TIMESTAMP"})
-  registered : Date;
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(0)', onUpdate: 'CURRENT_TIMESTAMP(0)' })
+  readonly modified: Date;
 
 }

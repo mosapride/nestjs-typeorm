@@ -19,14 +19,16 @@ type Config = {
   BCRYPT_SALT_ROUNDS: number;
   JWT_SECRET_KEY: string;
   AES_256_KEY: string;
+  COOKIE_ACCESS_NAME: string;
+  COOKIE_MAX_AGE: number;
 };
 
 /**
  * Config型コンパニオンオブジェクトパターン.
  */
 const Config = {
-  from(LEVEL, DOMAIN, MYSQL_HOST, MYSQL_PORT, MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_DATABASE, SERVER_PORT, BCRYPT_SALT_ROUNDS, JWT_SECRET_KEY, AES_256_KEY): Config {
-    return { LEVEL, DOMAIN, MYSQL_HOST, MYSQL_PORT, MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_DATABASE, SERVER_PORT, BCRYPT_SALT_ROUNDS, JWT_SECRET_KEY, AES_256_KEY };
+  from(LEVEL, DOMAIN, MYSQL_HOST, MYSQL_PORT, MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_DATABASE, SERVER_PORT, BCRYPT_SALT_ROUNDS, JWT_SECRET_KEY, AES_256_KEY, COOKIE_ACCESS_NAME, COOKIE_MAX_AGE): Config {
+    return { LEVEL, DOMAIN, MYSQL_HOST, MYSQL_PORT, MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_DATABASE, SERVER_PORT, BCRYPT_SALT_ROUNDS, JWT_SECRET_KEY, AES_256_KEY, COOKIE_ACCESS_NAME, COOKIE_MAX_AGE };
   }
 };
 
@@ -59,7 +61,9 @@ export class AppConfigService {
     const bcrypt_salt_rounds = +this.loadEnvFile<number>('BCRYPT_SALT_ROUNDS');
     const jwt_key = this.loadEnvFile<string>('JWT_SECRET_KEY');
     const aes_256_key = this.loadEnvFile<string>('AES_256_KEY');
-    this.config = Config.from(level, domain, mysqlHost, mysqlPort, mysqlUsername, mysqlPassword, mysqlDatabase, server_port, bcrypt_salt_rounds, jwt_key, aes_256_key);
+    const cookie_access_name = this.loadEnvFile<string>('COOKIE_ACCESS_NAME');
+    const cookie_max_age = +this.loadEnvFile<number>('COOKIE_MAX_AGE');
+    this.config = Config.from(level, domain, mysqlHost, mysqlPort, mysqlUsername, mysqlPassword, mysqlDatabase, server_port, bcrypt_salt_rounds, jwt_key, aes_256_key, cookie_access_name, cookie_max_age);
   }
 
 

@@ -1,10 +1,11 @@
+import { AuthJwtHash, EncryptionAuthJwtHash } from './../endpoint/user/user.dto';
 import { AppConfigService } from './../service/app-config/app-config.service';
 import { UserService } from './../endpoint/user/user.service';
 import { Injectable } from '@nestjs/common';
-import crypto from 'crypto';
-import { AppLogger } from 'src/util/app-logger';
-import { User } from '../endpoint/user/user.dto';
+import * as crypto from 'crypto';
+import { AppLogger } from '../util/app-logger';
 import * as bcrypt from 'bcrypt';
+import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 
 export type Encrypt = {
   encrypted: string,
@@ -21,7 +22,14 @@ export type JWToken = {
 export class AuthService {
   readonly logger = new AppLogger(AuthService.name);
   readonly aes_256_key = this.appConfigService.get('AES_256_KEY');
-  constructor(private userService: UserService, private readonly appConfigService: AppConfigService) {
+  readonly jwtOption: JwtSignOptions = {
+    secret: this.appConfigService.get('JWT_SECRET_KEY'),
+    expiresIn: '7 days'
+  };
+  constructor(
+    private readonly userService: UserService,
+    private readonly appConfigService: AppConfigService,
+    private readonly jwtService: JwtService) {
   }
 
   async validateUser(email: string, pass: string): Promise<JWToken> {
@@ -33,21 +41,60 @@ export class AuthService {
   }
 
   /**
-   * ログイン認証
-   * @param email 
-   * @param password 
+   * アクセストークン作成
+   * 
+   * @param email email
+   * @param password password
+   * @returns 認証成功時：JWTokenを返す。認証失敗時(ログイン認証失敗)：null
    */
-  async login(email: string, password: string): Promise<User> {
+  async createAccessToken(email: string, password: string): Promise<string> {
     const user = await this.userService.findOne(email);
     if (bcrypt.compareSync(password, user.password)) {
-      return user;
+      const encryptionAuthJwtHash = this.encryptionAuthJwtHash(user.email, user.modified);
+      return this.jwtService.signAsync(encryptionAuthJwtHash, this.jwtOption);
     } else {
       return null;
     }
-
   }
 
-  encryption(data: string, iv?: string): Encrypt {
+  /**
+   * email、modifiedを暗号化したJwtを返す。
+   * 
+   * @param email email
+   * @param modified 更新日
+   */
+  encryptionAuthJwtHash(email: string, modified: Date): EncryptionAuthJwtHash {
+    const e = this.encryption(email);
+    const m = this.encryption(modified, e.iv);
+    const encryptionAuthJwtHash: EncryptionAuthJwtHash = {
+      email: e.encrypted,
+      modified: m.encrypted,
+      iv: e.iv
+    };
+    return encryptionAuthJwtHash;
+  }
+
+  /**
+   * 暗号化したemail、modifiedを暗号化したJwtを復号化する。
+   * @param hash 複合化したemail,modified
+   */
+  decryptionAuthJwtHash(hash: EncryptionAuthJwtHash): AuthJwtHash {
+    const email = this.decryption(hash.email, hash.iv);
+    const modi = this.decryption(hash.modified, hash.iv);
+    const modified = new Date(+modi);
+    const authJwtHash: AuthJwtHash = {
+      email, modified
+    };
+    return authJwtHash;
+  }
+
+  encryption(data: string | number | Date, iv?: string): Encrypt {
+    if (typeof data === 'number') {
+      data = data + '';
+    }
+    if (data instanceof Date) {
+      data = data.getTime() + '';
+    }
     data = Buffer.from(data).toString('base64');
     if (!iv) {
       iv = crypto.randomBytes(8).toString('hex');
