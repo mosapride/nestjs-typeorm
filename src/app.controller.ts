@@ -1,5 +1,4 @@
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
-import { CookieAuthGuard } from './auth/cookie-auth.guard';
 import { AppLogger } from './util/app-logger';
 import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
@@ -42,7 +41,7 @@ export class AppController {
 
   // @UseGuards(AuthGuard('local'))
   @UseGuards(JwtAuthGuard)
-  @Get('test')
+  @Get('cookie-test')
   async test(@Req() req: express.Request) {
     console.log(req['user']);
     return 'hello';

@@ -38,12 +38,11 @@ export type ResponseUser = Pick<User, 'name' | 'email'>;
 export type RequestUpdateUser = Omit<User, 'isActive'>;
 
 /**
- * ハッシュ化したデータのJWT形式。
+ * JWT形式。
  */
 export type AuthJwtHash = {
   email : string;
   modified : Date;
-
 };
 
 /**

@@ -42,8 +42,8 @@ export class UserService {
 
   /**
    * email、パスワードの一致するユーザー情報を返す。
-   * @param email 
-   * @param password 
+   * @param email email
+   * @param password 平文パスワード
    */
   async auth(email: string, password: string): Promise<User> {
     return await this.findOne(email).then(user => {
@@ -60,8 +60,8 @@ export class UserService {
    * 
    * @param email email(unique key)
    */
-  findOne(email: string, modified?: Date): Promise<UserEntity> {
-    const option: FindOneOptions<UserEntity> = {};
+  findOne(email: string, modified?: Date): Promise<User> {
+    const option: FindOneOptions<User> = {};
     if (modified) {
       option.where = { email, modified };
     } else {
@@ -77,7 +77,7 @@ export class UserService {
    * @param val1 :number ユーザー情報のval1(最小0)から最大5データを返す  
    *             :string ユーザー情報の名前に一致したデータを全て返す
    */
-  find(val1: number | string): Promise<UserEntity[]> {
+  find(val1: number | string): Promise<User[]> {
     if (typeof val1 === 'number') {
       return this.userRepository.find({ skip: val1, take: 5 });
     } else {
