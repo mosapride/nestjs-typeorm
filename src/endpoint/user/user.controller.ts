@@ -1,5 +1,5 @@
-import { RequestCreateUser, ResponseUser, RequestUpdateUser } from './user.dto';
 import { UserEntity } from './../../typeorm/entity/user.entity';
+import { RequestCreateUser, ResponseUser, RequestUpdateUser, User } from './user.dto';
 import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
 import { UserService } from "./user.service";
 
@@ -13,7 +13,7 @@ export class UserController {
   }
 
   @Get()
-  findAll(): Promise<UserEntity[]> {
+  findAll(): Promise<User[]> {
     return this.userService.findAll();
   }
 
@@ -23,7 +23,7 @@ export class UserController {
   }
 
   @Get(':email')
-  findOne(@Param('email') email: string): Promise<UserEntity> {
+  findOne(@Param('email') email: string): Promise<User> {
     return this.userService.findOne(email);
   }
 

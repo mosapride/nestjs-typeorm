@@ -10,7 +10,7 @@ import { AppConfigModule } from '../../service/app-config/app-config.module';
     TypeOrmModule.forFeature([UserEntity]),
     AppConfigModule
   ],
-  exports: [UserService, AppConfigModule],
+  exports: [UserService],
   controllers: [UserController],
   providers: [UserService]
 })

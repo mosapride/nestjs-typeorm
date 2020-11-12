@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from '../../endpoint/user/user.dto';
+import { User, UserRole } from '../../endpoint/user/user.dto';
 
 
 @Entity('user')
@@ -19,8 +19,8 @@ export class UserEntity implements User {
   @Column({ unique: true })
   email: string;
 
-  @Column({ default: false })
-  isActive: boolean;
+  @Column({ type: 'enum', enum: UserRole, default: UserRole.ACTIVE })
+  role: UserRole;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(0)' })
   readonly registered: Date;

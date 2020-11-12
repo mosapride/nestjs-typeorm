@@ -30,7 +30,7 @@ export class UserService {
   /**
    * 全てのユーザー情報を返す
    */
-  findAll(): Promise<UserEntity[]> {
+  findAll(): Promise<User[]> {
     return this.userRepository.find();
   }
 
@@ -48,7 +48,7 @@ export class UserService {
   async auth(email: string, password: string): Promise<User> {
     return await this.findOne(email).then(user => {
       if (bcrypt.compareSync(password, user.password)) {
-        return user as User;
+        return user;
       } else {
         return null;
       }

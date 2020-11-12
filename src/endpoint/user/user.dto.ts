@@ -13,12 +13,19 @@ export type User = {
   // emailアドレス
   email: string;
   // アクティブフラグ
-  isActive: boolean;
+  role: UserRole;
   // 登録日
   registered: Date;
   // 更新日
   modified: Date;
 };
+
+export enum UserRole {
+  ADMIN = 'admin',
+  ACTIVE = 'active',
+  BAN = 'ban',
+  IN_ACTIVE = 'inactive'
+}
 
 /**
  * ユーザー情報作成DTO
