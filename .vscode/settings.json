@@ -10,5 +10,10 @@
   },
   "search.exclude": {
     "**/node_modules": true
-  }
+  },
+  "cSpell.words": [
+    "mosapride",
+    "nestjs",
+    "typeorm"
+  ]
 }
